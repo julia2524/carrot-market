@@ -1,7 +1,14 @@
-export default function Chat() {
+import Room from "@/components/room";
+import { getChatRooms } from "./actions";
+
+export default async function Chat() {
+  const chatRooms = await getChatRooms();
+  console.dir(chatRooms, { depth: null });
   return (
     <div>
-      <h1 className="text-white text-4xl">Chat!</h1>
+      {chatRooms?.map((room) => (
+        <Room key={room.id} {...room} />
+      ))}
     </div>
   );
 }

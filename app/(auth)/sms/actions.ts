@@ -5,7 +5,7 @@ import validator from "validator";
 import { redirect } from "next/navigation";
 import db from "@/lib/db";
 import crypto from "crypto";
-import { LoginSession } from "../github/complete/route";
+import { LoginSession } from "@/lib/session";
 const phoneSchema = z
   .string()
   .trim()

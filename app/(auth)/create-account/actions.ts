@@ -4,7 +4,7 @@ import { PASSWORD_REGEX, PASSWORD_REGEX_ERROR } from "@/lib/constants";
 import { z } from "zod";
 import db from "@/lib/db";
 import { redirect } from "next/navigation";
-import { LoginSession } from "../github/complete/route";
+import { LoginSession } from "@/lib/session";
 
 const checkUsername = (username: string) => !username.includes("potato");
 
@@ -67,7 +67,7 @@ const formSchema = z
       });
     }
   });
-export async function createAccount(prevState: any, formData: FormData) {
+export async function createAccount(_prevState: unknown, formData: FormData) {
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),

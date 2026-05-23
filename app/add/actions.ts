@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { productServerSchema } from "./schema";
 import z from "zod";
+import { revalidatePath } from "next/cache";
 
 const s3 = new S3Client({
   region: "auto",
@@ -68,6 +69,8 @@ export async function uploadProduct(formData: FormData) {
         },
         select: { id: true },
       });
+
+      revalidatePath("/home");
       redirect(`/products/${product.id}`);
     }
   }

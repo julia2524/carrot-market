@@ -1,15 +1,15 @@
 import db from "@/lib/db";
 import { getAccessToken, getGithubEmail, getGithubProfile } from "@/lib/github";
-import getSession from "@/lib/session";
-import { notFound, redirect } from "next/navigation";
+import { LoginSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
 
-export async function LoginSession(user: number) {
-  const session = await getSession();
-  session.id = user;
-  await session.save();
+interface IGithubEmail {
+  email: string;
+  primary: boolean;
+  verified: boolean;
+  visibility: string | null;
 }
-
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
   if (!code) {
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
 
   const userEmailsJson = await getGithubEmail(access_token);
   const primaryEmail = userEmailsJson.find(
-    (email: any) => email.primary && email.verified,
+    (email: IGithubEmail) => email.primary && email.verified,
   );
   console.log(primaryEmail?.email);
 

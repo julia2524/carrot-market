@@ -1,34 +1,17 @@
 import db from "@/lib/db";
-import getSession from "@/lib/session";
 import { formatToWon } from "@/lib/utils";
 import { UserIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
+import { getCachedProductTitle, getIsOwner, getProduct } from "./queries";
+import { createChatRoom, deleteProduct } from "./actions";
 
-async function getIsOwner(userId: number) {
-  const session = await getSession();
-  if (session.id) {
-    return session.id === userId;
-  }
-  return false;
-}
-
-async function getProduct(id: number) {
-  const product = await db.product.findUnique({
-    where: {
-      id,
-    },
-    include: {
-      user: {
-        select: {
-          username: true,
-          avatar: true,
-        },
-      },
-    },
-  });
-  return product;
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const product = await getCachedProductTitle(Number(params.id));
+  return {
+    title: product?.title,
+  };
 }
 
 export default async function ProductDetail({
@@ -45,23 +28,13 @@ export default async function ProductDetail({
     return notFound();
   }
   const isOwner = await getIsOwner(product.userId);
-  const remove = async () => {
-    "use server";
-    const session = await getSession();
-    const product = await db.product.findUnique({
-      where: { id },
-      select: {
-        userId: true,
-      },
-    });
-    if (product?.userId !== session.id) return;
-    await db.product.delete({
-      where: {
-        id,
-      },
-    });
-    redirect("/products");
-  };
+  const deleteProductWithId = deleteProduct.bind(null, product.id);
+  const createChatRoomWithId = createChatRoom.bind(
+    null,
+    product.userId,
+    product.id
+  );
+
   return (
     <div>
       <div className="relative aspect-square">
@@ -94,19 +67,34 @@ export default async function ProductDetail({
           {formatToWon(product.price)}원
         </span>
         {isOwner ? (
-          <form action={remove}>
-            <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
-              Delete product
-            </button>
-          </form>
+          <>
+            <form action={deleteProductWithId}>
+              <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
+                Delete product
+              </button>
+            </form>
+            <Link
+              href={`/products/${product.id}/edit`}
+              className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold"
+            >
+              Edit product
+            </Link>
+          </>
         ) : null}
-        <Link
-          className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold"
-          href={``}
-        >
-          채팅하기
-        </Link>
+
+        <form action={isOwner ? "/chat" : createChatRoomWithId}>
+          <button className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold">
+            {isOwner ? `대화중인 채팅` : "채팅하기"}
+          </button>
+        </form>
       </div>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  const products = await db.product.findMany({
+    select: { id: true },
+  });
+  return products.map((product) => ({ id: String(product.id) }));
 }
