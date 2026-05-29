@@ -1,5 +1,5 @@
 "use server";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { PASSWORD_REGEX, PASSWORD_REGEX_ERROR } from "@/lib/constants";
 import { z } from "zod";
 import db from "@/lib/db";

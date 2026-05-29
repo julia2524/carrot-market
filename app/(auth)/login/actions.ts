@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import db from "@/lib/db";
 import { redirect } from "next/navigation";
 import { LoginSession } from "@/lib/session";
