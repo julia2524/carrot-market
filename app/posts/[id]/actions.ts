@@ -57,6 +57,6 @@ export async function addingComment(comment: CommentType, postId: number) {
       },
       select: { id: true },
     });
-    revalidatePath(`/posts/${postId}`);
+    revalidateTag(`post-comments-${postId}`);
   }
 }

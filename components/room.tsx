@@ -30,19 +30,21 @@ export default async function Room({ id, users, messages, product }: RoomType) {
             unoptimized
           />
         ) : (
-          <UserIcon className="size-5 rounded-full" />
+          <UserIcon className="size-7 rounded-full absolute bottom-0 right-0 bg-neutral-400 text-white" />
         )}
       </div>
       <div className="flex flex-col gap-1 text-white ">
         <div className="flex flex-row gap-2 items-baseline">
           <span className="text-lg">{other?.username}</span>
           <span className="text-sm text-neutral-500">
-            {formatToTimeAgo(messages[0].created_at.toString())}
+            {messages[0]
+              ? formatToTimeAgo(messages[0].created_at.toString())
+              : "아직 대화가 없어요"}
           </span>
         </div>
         <div>
           <span className="text-lg text-neutral-500">
-            {messages[0].payload}
+            {messages[0]?.payload ?? "채팅을 시작해보세요!"}
           </span>
           <div></div>
         </div>

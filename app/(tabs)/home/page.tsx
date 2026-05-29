@@ -12,6 +12,9 @@ const getCashedProducts = nextCache(getInitialProducts, ["home-products"], {
 async function getInitialProducts() {
   console.log("hit!!!");
   const products = await db.product.findMany({
+    where: {
+      status: "FOR_SALE",
+    },
     select: {
       title: true,
       price: true,
@@ -39,11 +42,11 @@ export default async function Products() {
     <div>
       <ProductList initialProducts={initialProducts} />
 
-      <div className="fixed w-full bottom-24 mx-auto max-w-screen-md grid grid-cols-5 px-5">
+      <div className="fixed w-full bottom-24 mx-auto max-w-screen-md grid grid-cols-5 px-5 pointer-events-none">
         <div className="col-start-5 flex items-center justify-center">
           <Link
             href="/add"
-            className="bg-orange-500 flex items-center justify-center rounded-full size-16 text-white"
+            className="bg-orange-500 flex items-center justify-center rounded-full size-16 text-white pointer-events-auto"
           >
             <PlusIcon className="size-10" />
           </Link>

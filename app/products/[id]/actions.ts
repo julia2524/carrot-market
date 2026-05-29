@@ -24,6 +24,19 @@ export async function deleteProduct(productId: number) {
 export async function createChatRoom(userId: number, productId: number) {
   const session = await getSession();
   if (!session.id) return;
+  const productStatus = await db.product.findUnique({
+    where: {
+      id: productId,
+    },
+    select: {
+      status: true,
+    },
+  });
+  if (!productStatus || productStatus.status !== "FOR_SALE") {
+    return;
+  }
+
+  if (userId === session.id) return;
   const existingRoom = await db.chatRoom.findFirst({
     where: {
       productId,
@@ -49,7 +62,6 @@ export async function createChatRoom(userId: number, productId: number) {
   if (existingRoom) {
     return redirect(`/chats/${existingRoom.id}`);
   }
-  if (userId === session.id) return; //이게 꼭 필요한가..?
   const room = await db.chatRoom.create({
     data: {
       users: {

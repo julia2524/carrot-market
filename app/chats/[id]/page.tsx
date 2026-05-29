@@ -1,36 +1,15 @@
 import ChatMessagesList from "@/components/chat-messages-list";
+import { ProductStatus } from "@/components/product-status";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
+import { formatToWon } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
+import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { useState } from "react";
+import { getRoom, getUserProfile } from "./actions";
 
-async function getRoom(id: string) {
-  const room = await db.chatRoom.findUnique({
-    where: {
-      id,
-    },
-    include: {
-      users: {
-        select: { id: true },
-      },
-      product: {
-        select: {
-          id: true,
-          photo: true,
-        },
-      },
-    },
-  });
-  console.log(room);
-  if (room) {
-    const session = await getSession();
-    const canSee = Boolean(room.users.find((user) => user.id === session.id!));
-    if (!canSee) {
-      return null;
-    }
-  }
-  return room;
-}
 async function getMessages(chatRoomId: string) {
   const messages = await db.message.findMany({
     where: {
@@ -40,6 +19,7 @@ async function getMessages(chatRoomId: string) {
       id: true,
       payload: true,
       created_at: true,
+      isSystem: true,
       userId: true,
       user: {
         select: {
@@ -52,20 +32,8 @@ async function getMessages(chatRoomId: string) {
   return messages;
 }
 
-async function getUserProfile() {
-  const session = await getSession();
-  const user = await db.user.findUnique({
-    where: {
-      id: session.id!,
-    },
-    select: {
-      username: true,
-      avatar: true,
-    },
-  });
-  return user;
-}
 export type InitialChatMessages = Prisma.PromiseReturnType<typeof getMessages>;
+
 export default async function ChatRoom({ params }: { params: { id: string } }) {
   const room = await getRoom(params.id);
   if (!room) {
@@ -77,15 +45,31 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
   if (!user) {
     return notFound();
   }
+  const owner = Boolean(session.id === room.product.userId);
+  console.log(owner);
   return (
-    <ChatMessagesList
-      productId={room.product.id}
-      productPhoto={room.product.photo}
-      chatRoomId={params.id}
-      userId={session.id!}
-      username={user.username}
-      avatar={user.avatar!}
-      initialMessages={initialMessages}
-    />
+    <div className="min-h-screen flex flex-col overflow-hidden">
+      <ProductStatus
+        productPhoto={room.product.photo}
+        productId={room.product.id}
+        productTitle={room.product.title}
+        productStatus={room.product.status}
+        productPrice={room.product.price}
+        productOwner={owner}
+        chatRoomId={params.id}
+      />
+
+      <div className="flex-1 relative">
+        <ChatMessagesList
+          productId={room.product.id}
+          productPhoto={room.product.photo}
+          chatRoomId={params.id}
+          userId={session.id!}
+          username={user.username}
+          avatar={user.avatar!}
+          initialMessages={initialMessages}
+        />
+      </div>
+    </div>
   );
 }

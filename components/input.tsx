@@ -1,10 +1,8 @@
 import { forwardRef, InputHTMLAttributes } from "react";
-
 interface InputProps {
   errors?: string[];
   name: string;
 }
-
 const Input = forwardRef<
   HTMLInputElement,
   InputProps & InputHTMLAttributes<HTMLInputElement>
@@ -27,6 +25,5 @@ const Input = forwardRef<
     </>
   );
 });
-
 Input.displayName = "Input";
 export default Input;

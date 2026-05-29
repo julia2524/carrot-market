@@ -75,7 +75,7 @@ async function getCachedLikeStatus(postId: number, userId: number) {
   return cachedOperation(postId, userId);
 }
 
-async function getCashedProducts(postId: number) {
+async function getCashedComments(postId: number) {
   const cachedOperation = nextCache(
     getInitialComments,
     [`post-comments-${postId}`],
@@ -134,7 +134,7 @@ export default async function PostDetail({
     },
   });
   const { likeCount, isLiked } = await getCachedLikeStatus(id, session.id!);
-  const initialComments = await getCashedProducts(id);
+  const initialComments = await getCashedComments(id);
   return (
     <>
       <div className="p-5 text-white">

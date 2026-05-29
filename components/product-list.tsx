@@ -36,7 +36,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
         }
       },
       {
-        threshold: 1.0,
+        threshold: 0.1,
       }
     );
     if (trigger.current) {
@@ -47,7 +47,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
     };
   }, [isLoading]);
   return (
-    <div className="p-5 flex flex-col gap-5">
+    <div className="p-5 flex flex-col gap-5 pb-40">
       {products.map((product) => (
         <ListProduct key={product.id} {...product} />
       ))}

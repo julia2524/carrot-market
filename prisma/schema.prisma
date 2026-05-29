@@ -8,24 +8,27 @@ generator client {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  username     String        @unique
-  email        String?       @unique
-  password     String?
-  phone        String?       @unique
-  github_id    String?       @unique
-  avatar       String?
-  created_at   DateTime      @default(now())
-  updated_at   DateTime      @updatedAt
-  smstokens    SMSToken[]
-  products     Product[]
-  posts        Post[]
-  postcomments PostComment[]
-  likes        Like[]
-  chat_rooms   ChatRoom[]
-  messages     Message[]
-  liveStreams  LiveStream[]
-  liveComments LiveComment[]
+  id              Int           @id @default(autoincrement())
+  username        String        @unique
+  email           String?       @unique
+  password        String?
+  phone           String?       @unique
+  github_id       String?       @unique
+  avatar          String?
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
+  score           Float         @default(36.5)
+  smstokens       SMSToken[]
+  products        Product[]
+  posts           Post[]
+  postcomments    PostComment[]
+  likes           Like[]
+  chat_rooms      ChatRoom[]
+  messages        Message[]
+  liveStreams     LiveStream[]
+  liveComments    LiveComment[]
+  givenReviews    Review[]      @relation("GivenReviews")
+  receivedReviews Review[]      @relation("ReceivedReviews")
 }
 
 model SMSToken {
@@ -47,6 +50,7 @@ model Product {
   updated_at  DateTime   @updatedAt
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
+  status      String     @default("FOR_SALE")
   chatRooms   ChatRoom[]
 }
 
@@ -109,6 +113,8 @@ model Message {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   chatRoomId String
   userId     Int
+
+  isSystem Boolean @default(false)
 }
 
 model LiveStream {
@@ -134,4 +140,20 @@ model LiveComment {
   liveStrem    LiveStream @relation(fields: [liveStreamId], references: [id], onDelete: Cascade)
   userId       Int
   liveStreamId Int
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  score      Int
+  payload    String?
+  created_at DateTime @default(now())
+
+  reviewer   User @relation("GivenReviews", fields: [reviewerId], references: [id])
+  reviewerId Int
+
+  reviewed   User   @relation("ReceivedReviews", fields: [reviewedId], references: [id])
+  reviewedId Int
+  roomId     String
+
+  @@unique([reviewerId, roomId])
 }

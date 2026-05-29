@@ -8,15 +8,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { productServerSchema } from "./schema";
 import z from "zod";
 import { revalidatePath } from "next/cache";
-
-const s3 = new S3Client({
-  region: "auto",
-  endpoint: process.env.R2_ENDPOINT,
-  credentials: {
-    accessKeyId: process.env.R2_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
-  },
-});
+import { s3 } from "@/lib/r2";
 
 export async function uploadProduct(formData: FormData) {
   const data = {
@@ -41,7 +33,7 @@ export async function uploadProduct(formData: FormData) {
         Key: fileName,
         Body: buffer,
         ContentType: photoFile.type,
-      }),
+      })
     );
     const photoUrl = `${process.env.R2_PUBLIC_URL}/${fileName}`;
 
