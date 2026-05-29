@@ -34,6 +34,7 @@ export const metadata = {
 
 export default async function Life() {
   const posts = await getPosts();
+  console.log(posts);
   return (
     <div>
       <div className="p-5">
