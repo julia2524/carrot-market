@@ -1,9 +1,9 @@
 import db from "@/lib/db";
 import getSession from "@/lib/session";
 
-export default async function getUserInfo() {
-  const session = await getSession();
-  const userId = session.id;
+export default async function getUserInfo(userId: number) {
+  // const session = await getSession();
+  // const userId = session.id;
   const user = await db.user.findUnique({
     where: {
       id: userId,

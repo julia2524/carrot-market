@@ -4,9 +4,17 @@ import Link from "next/link";
 import getUserInfo from "./queries";
 import { formatToTimeAgo, formatToWon } from "@/lib/utils";
 import { statusStyles } from "@/lib/constants";
+import getSession from "@/lib/session";
 
-export default async function UserProfile() {
-  const user = await getUserInfo();
+export default async function UserProfile({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const userId = Number(params.id);
+  const session = await getSession();
+  const isMe = session.id === userId;
+  const user = await getUserInfo(userId);
   if (!user) return;
   const formattedDate = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
@@ -42,12 +50,14 @@ export default async function UserProfile() {
         <div>
           <span className="text-sm text-neutral-300">{formattedDate} 가입</span>
         </div>
-        <Link
-          href={`/profile/${user.id}/edit`}
-          className="bg-neutral-700 text-center py-2 text-sm text-white rounded-md"
-        >
-          프로필 수정
-        </Link>
+        {isMe ? (
+          <Link
+            href={`/profile/${user.id}/edit`}
+            className="bg-neutral-700 text-center py-2 text-sm text-white rounded-md"
+          >
+            프로필 수정
+          </Link>
+        ) : null}
       </div>
       <div className="flex flex-col p-5 rounded-2xl m-5 gap-4 bg-neutral-800">
         <div className="flex items-center gap-3">
