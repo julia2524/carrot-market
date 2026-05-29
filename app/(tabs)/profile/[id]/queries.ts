@@ -1,5 +1,4 @@
 import db from "@/lib/db";
-import getSession from "@/lib/session";
 
 export default async function getUserInfo(userId: number) {
   // const session = await getSession();
