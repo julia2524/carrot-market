@@ -60,6 +60,7 @@ export async function GET(request: NextRequest) {
       username: finalUsername,
       github_id: id + "",
       avatar: avatar_url,
+      email: primaryEmail?.email ?? null,
     },
     select: {
       id: true,
