@@ -35,7 +35,8 @@ export async function startStream(_: unknown, formData: FormData) {
       }),
     }
   );
-  //const json = await response.json();
+  const json = await response.json();
+  console.log(json);
   const session = await getSession();
   const stream = await db.liveStream.create({
     data: {
@@ -79,7 +80,7 @@ export async function deleteStream(streamId: number) {
     }
   );
 
-  const json = await response.json();
+  await response.json();
   if (!response.ok) {
     throw new Error("Cloudflare delete failed");
   }
