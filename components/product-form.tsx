@@ -22,10 +22,9 @@ export default function ProductForm({
   photo,
 }: ProductFormProps) {
   const [preview, setPreview] = useState(photo ?? "");
-  const [file, setFile] = useState<File | null>(null);
+  //const [file, setFile] = useState<File | null>(null);
   const {
     register,
-    handleSubmit,
     formState: { errors },
   } = useForm<ProductType>({
     resolver: zodResolver(productClientSchema) as Resolver<ProductType>,
@@ -67,7 +66,7 @@ export default function ProductForm({
       <ProductImageForm
         preview={preview}
         setPreview={setPreview}
-        setFile={setFile}
+        setFile={() => {}}
       />
 
       <Input
