@@ -6,6 +6,7 @@ import Link from "next/link";
 import { unstable_cache as nextCache } from "next/cache";
 
 const getCashedProducts = nextCache(getInitialProducts, ["home-products"], {
+  tags: ["home-products"],
   revalidate: 60,
 });
 

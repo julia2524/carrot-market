@@ -2,6 +2,7 @@
 
 import db from "@/lib/db";
 import getSession from "@/lib/session";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function deleteProduct(productId: number) {
@@ -18,6 +19,8 @@ export async function deleteProduct(productId: number) {
       id: productId,
     },
   });
+  revalidateTag("home-products");
+  revalidatePath("/home");
   redirect("/home");
 }
 
