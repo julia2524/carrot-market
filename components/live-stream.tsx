@@ -11,7 +11,7 @@ interface LiveStreamProps {
   user: {
     id: number;
     username: string;
-    avatar: string;
+    avatar: string | null;
   };
 }
 
@@ -20,7 +20,6 @@ export default function LiveStream({
   created_at,
   id,
   user,
-  stream_id,
 }: LiveStreamProps) {
   return (
     <Link href={`streams/${id}`} className="flex gap-5">

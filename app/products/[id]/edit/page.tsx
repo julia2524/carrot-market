@@ -11,7 +11,7 @@ export default async function Edit({ params }: { params: { id: string } }) {
   if (!product) {
     return notFound();
   }
-  console.log(product);
+  // console.log(product);
 
   return (
     <ProductForm

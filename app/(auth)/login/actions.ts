@@ -37,7 +37,6 @@ export async function login(_prevState: unknown, formData: FormData) {
 
   if (!result.success) {
     const flatten = z.flattenError(result.error);
-    console.log("result.error.flattenError: ", flatten);
     return { fieldErrors: flatten.fieldErrors };
   } else {
     const user = await db.user.findUnique({
@@ -51,7 +50,7 @@ export async function login(_prevState: unknown, formData: FormData) {
     });
     const ok = await bcrypt.compare(
       result.data.password,
-      user!.password ?? "xxxx",
+      user!.password ?? "xxxx"
     );
     if (ok) {
       await LoginSession(user!.id);

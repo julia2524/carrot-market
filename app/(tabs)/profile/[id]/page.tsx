@@ -1,7 +1,5 @@
 import Image from "next/image";
-import { getUser } from "../actions";
 import { UserIcon } from "@heroicons/react/24/solid";
-import Button from "@/components/button";
 import Link from "next/link";
 import getUserInfo from "./queries";
 import { formatToTimeAgo, formatToWon } from "@/lib/utils";
@@ -76,10 +74,16 @@ export default async function UserProfile() {
                     />
                     <div
                       className={`absolute top-1 left-1 py-0.5 px-1.5 rounded text-white font-bold text-sm ${
-                        statusStyles[product.status].bgColor
+                        statusStyles[
+                          product.status as keyof typeof statusStyles
+                        ].bgColor
                       }`}
                     >
-                      {statusStyles[product.status].label}
+                      {
+                        statusStyles[
+                          product.status as keyof typeof statusStyles
+                        ].label
+                      }
                     </div>
                   </div>
                   <div className="text-white">

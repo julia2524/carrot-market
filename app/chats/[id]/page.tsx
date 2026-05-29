@@ -2,12 +2,8 @@ import ChatMessagesList from "@/components/chat-messages-list";
 import { ProductStatus } from "@/components/product-status";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
-import { formatToWon } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useState } from "react";
 import { getRoom, getUserProfile } from "./actions";
 
 async function getMessages(chatRoomId: string) {
@@ -46,7 +42,7 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
     return notFound();
   }
   const owner = Boolean(session.id === room.product.userId);
-  console.log(owner);
+  // console.log(owner);
   return (
     <div className="min-h-screen flex flex-col overflow-hidden">
       <ProductStatus

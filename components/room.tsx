@@ -8,7 +8,7 @@ import Link from "next/link";
 type RoomType = NonNullable<ChatRooms>[number];
 export default async function Room({ id, users, messages, product }: RoomType) {
   const session = await getSession();
-  const me = users.find((user) => user.id === session.id);
+  // const me = users.find((user) => user.id === session.id);
   const other = users.find((user) => user.id !== session.id);
   return (
     <Link href={`/chats/${id}`} className="flex gap-5 p-5 ">

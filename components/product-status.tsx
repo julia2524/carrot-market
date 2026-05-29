@@ -1,7 +1,5 @@
 "use client";
 import { updateProductStatus } from "@/app/chats/[id]/actions";
-import { statusLabel } from "@/lib/constants";
-import getSession from "@/lib/session";
 import { formatToWon } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";

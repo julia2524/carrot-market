@@ -11,7 +11,6 @@ interface ProductListProps {
 export default function ProductList({ initialProducts }: ProductListProps) {
   const [products, setProducts] = useState(initialProducts);
   const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
   const trigger = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -26,7 +25,6 @@ export default function ProductList({ initialProducts }: ProductListProps) {
           setIsLoading(true);
           const newProducts = await getMoreProducts(products.length);
           if (newProducts.length !== 0) {
-            setPage((prev) => prev + 1);
             setProducts((prev) => [...prev, ...newProducts]);
           } else {
             setIsLastPage(true);
@@ -45,7 +43,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
     return () => {
       observer.disconnect();
     };
-  }, [isLoading]);
+  }, [isLoading, products.length]);
   return (
     <div className="p-5 flex flex-col gap-5 pb-40">
       {products.map((product) => (

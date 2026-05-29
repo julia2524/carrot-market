@@ -9,7 +9,7 @@ const schema = z.object({
   title: z.string(),
 });
 
-export async function startStream(_: any, formData: FormData) {
+export async function startStream(_: unknown, formData: FormData) {
   const data = {
     title: formData.get("title"),
   };
@@ -80,7 +80,6 @@ export async function deleteStream(streamId: number) {
   );
 
   const json = await response.json();
-  console.log(json);
   if (!response.ok) {
     throw new Error("Cloudflare delete failed");
   }

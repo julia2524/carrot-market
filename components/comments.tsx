@@ -1,5 +1,5 @@
 "use client";
-import { useOptimistic, useState } from "react";
+import { useOptimistic } from "react";
 
 import { InitialComments } from "@/app/posts/[id]/page";
 import Image from "next/image";
@@ -21,16 +21,27 @@ interface CommentsProps {
 export type CommentType = {
   comment: string;
 };
+type CommentUser = {
+  username: string;
+  avatar: string | null;
+};
+
+type OptimisticCommentType = {
+  id: number;
+  payload: string;
+  created_at: Date;
+  user: CommentUser;
+};
 
 export default function Comments({
   initialComments,
   postId,
   user,
 }: CommentsProps) {
-  const [state, reduceFn] = useOptimistic(
-    initialComments,
-    (previousState, payload) => [payload, ...previousState]
-  );
+  const [state, reduceFn] = useOptimistic<
+    OptimisticCommentType[],
+    OptimisticCommentType
+  >(initialComments, (previousState, payload) => [payload, ...previousState]);
   const { register, handleSubmit, setValue } = useForm<CommentType>();
   const onSubmit = async (data: CommentType) => {
     reduceFn({

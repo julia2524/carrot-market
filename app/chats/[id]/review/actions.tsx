@@ -4,7 +4,7 @@ import db from "@/lib/db";
 import { redirect } from "next/navigation";
 
 export async function createReviewPayload(
-  reviewId: String,
+  reviewId: string,
   formData: FormData
 ) {
   const data = {

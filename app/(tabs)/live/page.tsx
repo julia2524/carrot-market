@@ -5,7 +5,6 @@ import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
 async function getInitialStream() {
-  console.log("stream-list!!!!");
   const streams = await db.liveStream.findMany({
     select: {
       title: true,

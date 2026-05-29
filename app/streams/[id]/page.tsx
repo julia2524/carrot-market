@@ -29,7 +29,6 @@ async function getStream(id: number) {
   return stream;
 }
 async function getInitialLiveComments(streamId: number) {
-  console.log("comments");
   const comments = await db.liveComment.findMany({
     where: {
       liveStreamId: streamId,
@@ -37,7 +36,7 @@ async function getInitialLiveComments(streamId: number) {
     include: { user: true },
     orderBy: { created_at: "desc" },
   });
-  console.log(comments);
+  // console.log(comments);
   return comments;
 }
 export type InitialLiveComments = Prisma.PromiseReturnType<

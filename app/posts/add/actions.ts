@@ -9,7 +9,7 @@ const schema = z.object({
   title: z.string(),
   description: z.string(),
 });
-export async function postForm(_: any, formData: FormData) {
+export async function postForm(_: unknown, formData: FormData) {
   const data = {
     title: formData.get("title"),
     description: formData.get("description"),

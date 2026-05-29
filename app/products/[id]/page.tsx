@@ -42,10 +42,10 @@ export default async function ProductDetail({
         <Image fill src={product.photo} alt={product.title} unoptimized />
         <div
           className={`absolute top-1 left-1 py-0.5 px-1.5 rounded text-white font-bold text-2xl ${
-            statusStyles[product.status].bgColor
+            statusStyles[product.status as keyof typeof statusStyles].bgColor
           }`}
         >
-          {statusStyles[product.status].label}
+          {statusStyles[product.status as keyof typeof statusStyles].label}
         </div>
       </div>
       <Link
@@ -103,10 +103,14 @@ export default async function ProductDetail({
               <button
                 disabled
                 className={`${
-                  statusStyles[product.status].bgColor
+                  statusStyles[product.status as keyof typeof statusStyles]
+                    .bgColor
                 } px-5 py-2.5 rounded-md text-white font-semibold whitespace-nowrap`}
               >
-                {statusStyles[product.status].label}
+                {
+                  statusStyles[product.status as keyof typeof statusStyles]
+                    .label
+                }
               </button>
             )}
           </form>

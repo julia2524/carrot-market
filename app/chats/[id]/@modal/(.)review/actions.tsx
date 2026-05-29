@@ -19,7 +19,7 @@ export async function createReviewScore(
   if (existingReview) {
     return existingReview.id;
   }
-  const [_, review] = await db.$transaction([
+  const [, review] = await db.$transaction([
     db.user.update({
       where: {
         id: other,

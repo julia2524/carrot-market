@@ -99,9 +99,11 @@ export default function ChatMessagesList({
       >
         {messages.map((message) =>
           message.isSystem ? (
-            <div className="flex flex-row gap-3 border-2 border-neutral-600 py-2 px-3 rounded-md">
+            <div
+              key={message.id}
+              className="flex flex-row gap-3 border-2 border-neutral-600 py-2 px-3 rounded-md"
+            >
               <div
-                key={message.id}
                 className={`flex gap-2 items-start ${
                   message.userId === userId ? "justify-end" : ""
                 }`}

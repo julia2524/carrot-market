@@ -10,7 +10,7 @@ export default function EditAvatarForm({
   setPreview,
   setFile,
 }: ProductImageFormProps) {
-  console.log(preview);
+  // console.log(preview);
   const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },

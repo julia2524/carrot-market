@@ -1,11 +1,5 @@
-import { getProduct } from "@/app/products/[id]/queries";
 import ExButton from "@/components/ex-button";
-import { ProductStatus } from "@/components/product-status";
-import {
-  HeartIcon,
-  ChatBubbleOvalLeftEllipsisIcon as OutlineChatIcon,
-} from "@heroicons/react/24/outline";
-import Image from "next/image";
+
 import { notFound } from "next/navigation";
 import { getRoom } from "../../actions";
 import getSession from "@/lib/session";

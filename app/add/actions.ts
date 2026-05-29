@@ -4,7 +4,7 @@ import getSession from "@/lib/session";
 import db from "@/lib/db";
 import { redirect } from "next/navigation";
 
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { productServerSchema } from "./schema";
 import z from "zod";
 import { revalidatePath } from "next/cache";
@@ -37,13 +37,13 @@ export async function uploadProduct(formData: FormData) {
     );
     const photoUrl = `${process.env.R2_PUBLIC_URL}/${fileName}`;
 
-    console.log("✅ R2 업로드 성공! URL:", photoUrl);
-    console.log("📦 DB에 저장될 최종 데이터:", {
-      title: result.data.title,
-      price: result.data.price, // Zod가 숫자로 바꾼 값
-      description: result.data.description,
-      photo: photoUrl, // 파일이 아니라 주소!
-    });
+    // console.log("✅ R2 업로드 성공! URL:", photoUrl);
+    // console.log("📦 DB에 저장될 최종 데이터:", {
+    //   title: result.data.title,
+    //   price: result.data.price, // Zod가 숫자로 바꾼 값
+    //   description: result.data.description,
+    //   photo: photoUrl, // 파일이 아니라 주소!
+    // });
 
     const session = await getSession();
     if (session.id) {

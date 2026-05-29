@@ -1,5 +1,5 @@
 "use client";
-import { useOptimistic, useState } from "react";
+import { useOptimistic } from "react";
 import Image from "next/image";
 import { UserIcon } from "@heroicons/react/16/solid";
 import { formatToTimeAgo } from "@/lib/utils";
@@ -21,12 +21,24 @@ export type LiveCommentType = {
   comment: string;
 };
 
+type CommentUser = {
+  username: string;
+  avatar: string | null;
+};
+
+type CommentType = {
+  id: number;
+  payload: string;
+  created_at: Date;
+  user: CommentUser;
+};
+
 export default function LiveComments({
   initialComments,
   liveStreamId,
   user,
 }: CommentsProps) {
-  const [state, reduceFn] = useOptimistic(
+  const [state, reduceFn] = useOptimistic<CommentType[], CommentType>(
     initialComments,
     (previousState, payload) => [payload, ...previousState]
   );

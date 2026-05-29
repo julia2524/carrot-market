@@ -27,9 +27,8 @@ export async function GET(request: NextRequest) {
 
   const userEmailsJson = await getGithubEmail(access_token);
   const primaryEmail = userEmailsJson.find(
-    (email: IGithubEmail) => email.primary && email.verified,
+    (email: IGithubEmail) => email.primary && email.verified
   );
-  console.log(primaryEmail?.email);
 
   const { login, id, avatar_url } = await getGithubProfile(access_token);
   const user = await db.user.findUnique({

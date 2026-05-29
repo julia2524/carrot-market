@@ -76,7 +76,7 @@ export async function getRoom(id: string) {
       },
     },
   });
-  console.log(room);
+  // console.log(room);
   if (room) {
     const session = await getSession();
     const canSee = Boolean(room.users.find((user) => user.id === session.id!));

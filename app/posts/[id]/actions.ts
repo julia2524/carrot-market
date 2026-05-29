@@ -3,7 +3,7 @@
 import { CommentType } from "@/components/comments";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export async function likePost(postId: number) {
   await new Promise((r) => setTimeout(r, 5000));

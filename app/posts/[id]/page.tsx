@@ -35,7 +35,7 @@ async function getPost(id: number) {
       },
     });
     return post;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -88,7 +88,6 @@ async function getCashedComments(postId: number) {
 }
 
 async function getInitialComments(postId: number) {
-  console.log("comments!!!");
   const comments = await db.postComment.findMany({
     where: {
       postId,
@@ -100,7 +99,7 @@ async function getInitialComments(postId: number) {
       created_at: "desc",
     },
   });
-  console.log(comments);
+  // console.log(comments);
   return comments;
 }
 
@@ -121,7 +120,7 @@ export default async function PostDetail({
   if (!post) {
     return notFound();
   }
-  console.log(post);
+  // console.log(post);
 
   const session = await getSession();
   const user = await db.user.findUnique({
